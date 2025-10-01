@@ -1,0 +1,11 @@
+{
+  "name": "@chat-app/utils",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": { "lint": "eslint .", "type-check": "tsc --noEmit" },
+  "devDependencies": {
+    "@chat-app/typescript-config": "workspace:*",
+    "@chat-app/eslint-config": "workspace:*"
+  }
+}
