@@ -3,41 +3,40 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
-  output   = "../generated/prisma"
-}
+     provider = "prisma-client-js"
+     output   = "../generated/prisma"
+   }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  username  String   @unique
-  createdAt DateTime @default(now())
-  messages  Message[]
-  rooms     Room[]   @relation("RoomUsers")
-}
+   model User {
+     id        String   @id @default(cuid())
+     email     String   @unique
+     password  String
+     username  String   @unique
+     createdAt DateTime @default(now())
+     messages  Message[]
+     rooms     Room[]   @relation("RoomUsers")
+   }
 
-model Room {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  messages  Message[]
-  users     User[]   @relation("RoomUsers")
-}
+   model Room {
+     id        String   @id @default(cuid())
+     name      String   @unique
+     createdAt DateTime @default(now())
+     messages  Message[]
+     users     User[]   @relation("RoomUsers")
+   }
 
-model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  createdAt DateTime @default(now())
-  userId    Int
-  roomId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  room      Room     @relation(fields: [roomId], references: [id])
-}
+   model Message {
+     id        String   @id @default(cuid())
+     content   String
+     createdAt DateTime @default(now())
+     userId    String
+     roomId    String
+     user      User     @relation(fields: [userId], references: [id])
+     room      Room     @relation(fields: [roomId], references: [id])
+   }

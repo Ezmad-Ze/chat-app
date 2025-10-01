@@ -3,15 +3,15 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ChatService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
-  async createRoom(name: string, userId: number) {
+  async createRoom(name: string, userId: string) {
     return this.prisma.room.create({
       data: { name, users: { connect: { id: userId } } },
     });
   }
 
-  async getMessages(roomId: number) {
+  async getMessages(roomId: string) {
     return this.prisma.message.findMany({
       where: { roomId },
       include: { user: true },
@@ -19,7 +19,7 @@ export class ChatService {
     });
   }
 
-  async createMessage(content: string, userId: number, roomId: number) {
+  async createMessage(content: string, userId: string, roomId: string) {
     return this.prisma.message.create({
       data: { content, userId, roomId },
       include: { user: true },
