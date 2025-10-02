@@ -59,7 +59,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -83,7 +83,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await this.userService.create(email, hashedPassword, username);
 
-    const payload = { email: user.email, sub: user.id };
+    const payload = { email: user.email, sub: user.id, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
     };
