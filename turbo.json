@@ -2,41 +2,14 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**",
-        "build/**"
-      ]
-    },
-    "build:styles": {
-      "outputs": [
-        "dist/**"
-      ]
-    },
-    "build:components": {
-      "outputs": [
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "dev": {
-      "with": [
-        "dev:styles",
-        "dev:components"
-      ],
       "cache": false,
       "persistent": true,
       "interruptible": true
-    },
-    "dev:styles": {
-      "cache": false,
-      "persistent": true
-    },
-    "dev:components": {
-      "cache": false,
-      "persistent": true
-    },
+    },  
     "lint": {
       "outputs": []
     },
