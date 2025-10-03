@@ -9,4 +9,4 @@ sleep 5
 
 # Start local development
 echo "Starting local development..."
-turbo run dev
+pnpm turbo run dev
