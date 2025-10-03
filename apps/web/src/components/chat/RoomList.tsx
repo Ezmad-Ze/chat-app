@@ -46,7 +46,6 @@ export function RoomList({
     setError(null);
     try {
       const roomsData = await api.getRooms(token);
-      console.log('Rooms loaded:', roomsData);
       setRooms(roomsData);
     } catch (error: any) {
       console.error('Failed to load rooms:', error);

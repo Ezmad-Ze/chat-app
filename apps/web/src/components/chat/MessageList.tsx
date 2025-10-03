@@ -40,7 +40,6 @@
             });
 
             const handleMessages = (initialMessages: Message[]) => {
-              console.log('Messages received:', initialMessages);
               setMessages(initialMessages);
               setLoading(false);
             };

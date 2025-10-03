@@ -51,7 +51,6 @@ export class ChatGateway implements OnGatewayConnection {
         throw new UnauthorizedException('No token provided');
       }
       const payload = await this.jwtService.verifyAsync(token);
-      console.log('Socket connected, user:', payload.username, 'Payload:', payload);
       client.data.user = {
         userId: payload.sub,
         email: payload.email,
@@ -82,7 +81,6 @@ export class ChatGateway implements OnGatewayConnection {
         roomId: dto.roomId,
       });
 
-      console.log(`User ${client.data.user.username} joined room ${dto.roomId}`);
       if (typeof ack === 'function') {
         ack({ success: true });
       }
@@ -101,12 +99,10 @@ export class ChatGateway implements OnGatewayConnection {
       if (!dto[0].name || typeof dto[0].name !== 'string' || dto[0].name.trim().length < 3) {
         throw new Error('Room name must be a string with at least 3 characters');
       }
-      console.log('Create room request from user:', client.data.user.username, 'DTO:', dto);
       const room = await this.roomService.createRoom(dto[0].name, client.data.user.userId);
 
       this.server.emit('roomCreated', room);
 
-      console.log(`Room created: ${room.name} by user ${client.data.user.username}`);
       if (typeof ack === 'function') {
         ack({ success: true, data: room });
       }
@@ -122,8 +118,7 @@ export class ChatGateway implements OnGatewayConnection {
   @SubscribeMessage('sendMessage')
   async handleMessage(client: Socket, dto: any[], ack?: (response: any) => void) {
     try {
-      const payload = dto[0]; // Extract the actual object
-
+      const payload = dto[0];
       if (!payload?.roomId || typeof payload.roomId !== 'string') {
         throw new Error('Invalid or missing room ID');
       }
@@ -167,7 +162,6 @@ export class ChatGateway implements OnGatewayConnection {
         user: client.data.user,
         roomId: dto.roomId,
       });
-      console.log(`User ${client.data.user.username} left room ${dto.roomId}`);
       if (typeof ack === 'function') {
         ack({ success: true });
       }

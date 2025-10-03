@@ -21,7 +21,6 @@ const decodeJWT = (token: string) => {
   try {
     const payload = token.split('.')[1];
     const decoded = JSON.parse(atob(payload));
-    console.log('Decoded JWT:', decoded, 'Current time:', Date.now()); // Debug log
     return decoded;
   } catch (error) {
     console.error('Failed to decode token:', error);
@@ -43,7 +42,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const decoded = decodeJWT(savedToken);
           if (decoded && decoded.exp * 1000 > Date.now()) {
-            console.log('Token valid, setting auth:', decoded); // Debug log
             setToken(savedToken);
             setUser({
               id: decoded.sub,
@@ -61,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           navigate('/auth');
         }
       } else {
-        console.log('No saved token found');
+        console.error('No saved token found');
       }
       setIsLoading(false);
     };
@@ -80,7 +78,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Token already expired');
       }
 
-      console.log('Login successful, token:', newToken); // Debug log
       localStorage.setItem('auth_token', newToken);
       setToken(newToken);
       setUser({
@@ -96,7 +93,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
-    console.log('Logging out, clearing token'); // Debug log
     localStorage.removeItem('auth_token');
     localStorage.removeItem('selectedRoomId');
     setToken(null);

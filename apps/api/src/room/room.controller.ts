@@ -25,7 +25,6 @@ export class RoomController {
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async createRoom(@Body() createRoomDto: CreateRoomDto, @Request() req) {
-    console.log('Creating room with user:', req.user);
     return this.roomService.createRoom(createRoomDto.name, req.user.sub);
   }
 }

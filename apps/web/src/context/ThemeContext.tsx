@@ -9,7 +9,6 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Initialize theme synchronously from localStorage or system preference
   const getInitialTheme = (): Theme => {
     const saved = localStorage.getItem('theme') as Theme | null;
     if (saved) return saved;
@@ -20,8 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme());
 
   useEffect(() => {
-    // Apply theme classes and save to localStorage
-    document.body.classList.remove('light', 'dark'); // Remove both to avoid conflicts
+    document.body.classList.remove('light', 'dark');
     document.body.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);

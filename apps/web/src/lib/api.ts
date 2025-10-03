@@ -44,7 +44,6 @@ export const api = {
   },
 
   getRooms: async (token: string) => {
-    console.log('Fetching rooms with token:', token);
     const response = await fetch(`${API_BASE}/rooms`, {
       headers: {
         Authorization: `Bearer ${token}`,
