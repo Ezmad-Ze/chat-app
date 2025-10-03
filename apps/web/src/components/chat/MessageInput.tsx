@@ -23,9 +23,12 @@ export function MessageInput({ roomId }: { roomId: string }) {
 
     try {
       const socket = getSocket(token);
-      console.log('Sending message with roomId:', roomId);
 
-      const response = await socket.emitWithAck(
+      setContent('');
+      setSending(false);
+
+
+      await socket.emitWithAck(
         'sendMessage',
         {
           roomId,
@@ -34,18 +37,11 @@ export function MessageInput({ roomId }: { roomId: string }) {
         5000,
       );
 
-      if (response.success) {
-        setContent('');
-        console.log('Message sent successfully:', response.data);
-      } else {
-        throw new Error(response.error || 'Failed to send message');
-      }
+
     } catch (error: any) {
       console.error('Failed to send message:', error);
       setError(error.message || 'Failed to send message');
-    } finally {
-      setSending(false);
-    }
+    } 
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

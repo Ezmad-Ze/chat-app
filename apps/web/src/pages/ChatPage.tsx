@@ -57,8 +57,8 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="p-4 max-w-6xl mx-auto h-screen flex flex-col">
-      <div className="flex justify-between items-center mb-4">
+    <div className="flex flex-col h-screen">
+      <div className="flex justify-between items-center p-4 border-b">
         <div>
           <h1 className="text-2xl font-bold">Chat Rooms</h1>
           {user && (
@@ -72,12 +72,12 @@ export default function ChatPage() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1 min-h-0">
-        <Card className="lg:col-span-1 flex flex-col">
+      <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4 p-4">
+        <Card className="lg:w-1/4 flex flex-col">
           <div className="p-4 border-b">
             <h2 className="font-semibold">Available Rooms</h2>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto min-h-0">
             <RoomList
               onSelectRoom={setSelectedRoomId}
               selectedRoomId={selectedRoomId}
@@ -85,12 +85,16 @@ export default function ChatPage() {
           </div>
         </Card>
 
-        <Card className="lg:col-span-3 flex flex-col">
+        <Card className="flex-1 flex flex-col min-h-0">
           {selectedRoomId ? (
-            <>
-              <MessageList roomId={selectedRoomId} />
-              <MessageInput roomId={selectedRoomId} />
-            </>
+            <div className="flex flex-col h-full">
+              <div className="flex-1 overflow-y-auto min-h-0">
+                <MessageList roomId={selectedRoomId} />
+              </div>
+              <div className="flex-shrink-0 border-t">
+                <MessageInput roomId={selectedRoomId} />
+              </div>
+            </div>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
               Select a room to start chatting
@@ -100,4 +104,4 @@ export default function ChatPage() {
       </div>
     </div>
   );
-}
+} 

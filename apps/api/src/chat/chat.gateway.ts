@@ -120,31 +120,32 @@ export class ChatGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('sendMessage')
-  async handleMessage(client: Socket, dto: SendMessageDto, ack?: (response: any) => void) {
+  async handleMessage(client: Socket, dto: any[], ack?: (response: any) => void) {
     try {
-      if (!dto.roomId || typeof dto.roomId !== 'string') {
+      const payload = dto[0]; // Extract the actual object
+
+      if (!payload?.roomId || typeof payload.roomId !== 'string') {
         throw new Error('Invalid or missing room ID');
       }
-      if (!dto.content || typeof dto.content !== 'string' || dto.content.trim().length === 0) {
+      if (!payload?.content || typeof payload.content !== 'string' || payload.content.trim().length === 0) {
         throw new Error('Message content must be a non-empty string');
       }
 
-      const room = await this.roomService.getRoom(dto.roomId);
+      const room = await this.roomService.getRoom(payload.roomId);
       if (!room) {
         throw new Error('Room does not exist');
       }
 
       const message = await this.chatService.createMessage(
-        dto.content.trim(),
+        payload.content.trim(),
         client.data.user.userId,
-        dto.roomId,
+        payload.roomId,
       );
 
-      this.server.to(dto.roomId).emit('message', message);
-
-      console.log(`Message sent to room ${dto.roomId} by ${client.data.user.username}`);
+      this.server.to(payload.roomId).emit('message', message);
+      
       if (typeof ack === 'function') {
-        ack({ success: true, data: message });
+        ack({ success: true,  message });
       }
     } catch (error) {
       console.error('Send message error:', error);
